@@ -1,7 +1,6 @@
 package wallet
 
 import (
-	"log"
 	"time"
 
 	"github.com/google/uuid"
@@ -53,7 +52,7 @@ func GetWalletByEmail(db *gorm.DB, dto *GetWalletByEmailDto) *Wallet {
 	result := db.Where("email", dto.Email).First(&wallet)
 
 	if result.Error != nil {
-		log.Fatalf("Error get wallet %v", result.Error)
+		return nil
 	}
 
 	return &wallet

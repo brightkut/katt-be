@@ -3,14 +3,17 @@ package main
 import (
 	"context"
 	"fmt"
+	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
+	"katt-be/category"
 	"katt-be/handler"
 	"katt-be/middleware"
+	"katt-be/transaction"
+	"katt-be/wallet"
 	"log"
 	"os"
 	"time"
 
-	"github.com/aws/aws-lambda-go/events"
-	"github.com/aws/aws-lambda-go/lambda"
 	fiberadapter "github.com/awslabs/aws-lambda-go-api-proxy/fiber"
 	_ "github.com/brightkut/rest-api-go-fiber/docs"
 	"github.com/gofiber/fiber/v2"
@@ -49,7 +52,7 @@ func init() {
 
 	// Running local
 	// dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", host, port, user, password, dbname)
-	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", os.Getenv("DB_HOST"), 6543, os.Getenv("DB_USER"), os.Getenv("DB_PASS"), os.Getenv("DB_NAME"))
+	dsn := fmt.Sprintf("host=%s port=%d user=%s password=%s dbname=%s sslmode=disable", os.Getenv("DB_HOST"), 5432, os.Getenv("DB_USER"), os.Getenv("DB_PASS"), os.Getenv("DB_NAME"))
 
 	db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{
 		Logger: newLogger,
@@ -59,7 +62,7 @@ func init() {
 	}
 
 	// auto create and update table but not for delete case
-	// db.AutoMigrate(&wallet.Wallet{}, &category.Category{}, &transaction.Transaction{})
+	db.AutoMigrate(&wallet.Wallet{}, &category.Category{}, &transaction.Transaction{})
 
 	fmt.Printf("Connect DB successfully")
 

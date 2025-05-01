@@ -5,7 +5,7 @@
 1. run build command in the root directory
 
 ```bash
-GOOS=linux GOARCH=amd64 go build -o bootstrap main.go                                                                            🐏 12GiB/16GiB   14:45 
+GOOS=linux GOARCH=amd64 go build -o bootstrap main.go
 zip function.zip bootstrap
 mv function.zip deploy/
 ```

@@ -1,7 +1,10 @@
 package transaction
 
 import (
+	"errors"
+	"fmt"
 	"katt-be/util"
+	"katt-be/wallet"
 	"log"
 	"time"
 
@@ -14,6 +17,7 @@ type CreateTransactionDto struct {
 	CategoryId      string
 	TransactionType string
 	TransactionName string
+	Amount          float64
 }
 
 type GetAllTransactionByWalletIdDto struct {
@@ -23,37 +27,63 @@ type GetAllTransactionByWalletIdDto struct {
 }
 
 type Transaction struct {
-	TrnsactionId    string `gorm:"primaryKey"`
+	TransactionId   string `gorm:"primaryKey"`
 	WalletId        string
 	CategoryId      string
 	TransactionType string
 	TransactionName string
+	Amount          float64
 	CreatedAt       time.Time // Manually define timestamp fields
 	UpdatedAt       time.Time
 	DeletedAt       gorm.DeletedAt // Enables soft delete
 }
 
 func CreateTransaction(db *gorm.DB, dto *CreateTransactionDto) error {
-	transactionId, err := uuid.NewV7()
-	if err != nil {
-		return err
-	}
+	// Start DB transaction block
+	return db.Transaction(func(tx *gorm.DB) error {
+		// Generate transaction ID
+		transactionId, err := uuid.NewV7()
+		if err != nil {
+			return err
+		}
 
-	transaction := &Transaction{
-		TrnsactionId:    transactionId.String(),
-		CategoryId:      dto.WalletId,
-		WalletId:        dto.WalletId,
-		TransactionType: dto.TransactionType,
-		TransactionName: dto.TransactionName,
-	}
+		// Find wallet first
+		var w wallet.Wallet
+		result := tx.First(&w, "wallet_id = ?", dto.WalletId)
+		if result.Error != nil {
+			if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+				return fmt.Errorf("wallet not found")
+			}
+			return result.Error
+		}
 
-	result := db.Create(transaction)
+		// Create transaction record
+		transaction := &Transaction{
+			TransactionId:   transactionId.String(),
+			CategoryId:      dto.CategoryId,
+			WalletId:        dto.WalletId,
+			TransactionType: dto.TransactionType,
+			TransactionName: dto.TransactionName,
+			Amount:          dto.Amount,
+		}
 
-	if result.Error != nil {
-		return result.Error
-	}
+		if err := tx.Create(transaction).Error; err != nil {
+			return err
+		}
 
-	return nil
+		// 🔥 Update wallet total money if DEPOSIT
+		if dto.TransactionType == "DEPOSIT" {
+			w.TotalMoney += dto.Amount
+		} else if dto.TransactionType == "WITHDRAW" {
+			w.TotalMoney -= dto.Amount
+		}
+
+		if err := tx.Save(&w).Error; err != nil {
+			return err
+		}
+
+		return nil // ✅ Everything is good, commit the transaction
+	})
 }
 
 func GetAllTransactionByWalletId(db *gorm.DB, dto *GetAllTransactionByWalletIdDto) (util.PaginationResult[Transaction], error) {
