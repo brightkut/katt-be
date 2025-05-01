@@ -1,0 +1,63 @@
+### Create Wallet
+POST http://localhost:8080/wallets
+Content-Type: application/json
+
+{
+  "email": "test2@email.com",
+  "totalMoney": 1000
+}
+###01968490-5dc2-77b0-9011-52cc58714dcf
+### Get Wallet By Email
+POST http://localhost:8080/wallets-by-email
+Content-Type: application/json
+
+{
+  "email": "test2@email.com"
+}
+
+### Create Category
+POST http://localhost:8080/categories
+Content-Type: application/json
+
+{
+  "walletId": "01968490-5dc2-77b0-9011-52cc58714dcf",
+  "categoryName": "Food"
+}
+
+### Create Category
+POST http://localhost:8080/categories
+Content-Type: application/json
+
+{
+  "walletId": "01968157-97cb-722e-8000-2e19dfa5cd74",
+  "categoryName": "Fixed"
+}
+
+### Get All Category By walletId
+POST http://localhost:8080/categories-by-wallet-id
+Content-Type: application/json
+
+{
+  "walletId": "01968157-97cb-722e-8000-2e19dfa5cd74"
+}
+
+
+### Delete Category
+DELETE http://localhost:8080/categories/01968157-97cb-722e-8000-2e19dfa5cd74
+
+### Create Transaction
+POST http://localhost:8080/transactions
+Content-Type: application/json
+
+{
+  "walletId": "01968157-97cb-722e-8000-2e19dfa5cd74",
+  "categoryId": "01968198-5d1f-7b33-8c05-35d24415a02a",
+  "transactionType": "ADD",
+  "transactionName": "Chester"
+}
+
+### Get All Transaction By Wallet Id
+GET http://localhost:8080/transactions?walletId=01968157-97cb-722e-8000-2e19dfa5cd74&page=0&pageSize=2
+
+### Delete Transaction
+DELETE http://localhost:8080/transactions/01968157-97cb-722e-8000-2e19dfa5cd74

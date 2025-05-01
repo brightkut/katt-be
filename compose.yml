@@ -1,0 +1,11 @@
+services:
+  postgres:
+    image: 'postgres:latest'
+    environment:
+      - 'POSTGRES_DB=katt'
+      - 'POSTGRES_PASSWORD=secret'
+      - 'POSTGRES_USERNAME=postgres'
+    volumes:
+      - ./db-docker-data:/var/lib/postgresql/data
+    ports:
+      - '5432:5432'
