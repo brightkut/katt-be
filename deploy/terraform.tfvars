@@ -1,0 +1,7 @@
+jwt_secret      = "f46hVvuRdtCzjoByvdatpcIBWnGjpEDB"
+auth0_audience  = "unique"
+auth0_domain    = "dev-5okhw7erfmuw3u6k.us.auth0.com"
+db_host         = "aws-0-ap-southeast-1.pooler.supabase.com"
+db_user         = "postgres.jlegkgnwewmhcgfdqsnw"
+db_pass         = "rkd2nvr8BYW.zkh4txb"
+db_name         = "postgres"
