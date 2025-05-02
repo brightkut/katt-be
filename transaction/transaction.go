@@ -26,6 +26,18 @@ type GetAllTransactionByWalletIdDto struct {
 	PageSize int32
 }
 
+type TransactionWithCategoryDTO struct {
+	TransactionId   string    `json:"transactionId"`
+	WalletId        string    `json:"walletId"`
+	CategoryId      string    `json:"categoryId"`
+	CategoryName    string    `json:"categoryName"` // Added category name
+	TransactionType string    `json:"transactionType"`
+	TransactionName string    `json:"transactionName"`
+	Amount          float64   `json:"amount"`
+	CreatedAt       time.Time `json:"createdAt"`
+	UpdatedAt       time.Time `json:"updatedAt"`
+}
+
 type Transaction struct {
 	TransactionId   string `gorm:"primaryKey"`
 	WalletId        string
@@ -86,15 +98,47 @@ func CreateTransaction(db *gorm.DB, dto *CreateTransactionDto) error {
 	})
 }
 
-func GetAllTransactionByWalletId(db *gorm.DB, dto *GetAllTransactionByWalletIdDto) (util.PaginationResult[Transaction], error) {
-	query := db.Where("wallet_id = ?", dto.WalletId)
+func GetAllTransactionByWalletId(db *gorm.DB, dto *GetAllTransactionByWalletIdDto) (util.PaginationResult[TransactionWithCategoryDTO], error) {
+	var transactions []TransactionWithCategoryDTO
+	var total int64
 
-	transactions, err := util.Paginate(query, Transaction{}, int(dto.Page), int(dto.PageSize))
-	if err != nil {
-		return util.PaginationResult[Transaction]{}, err
+	// Count total records
+	db.Model(&Transaction{}).Where("wallet_id = ?", dto.WalletId).Count(&total)
+
+	// Calculate pagination
+	if dto.Page < 1 {
+		dto.Page = 1
+	}
+	if dto.PageSize <= 0 {
+		dto.PageSize = 10
 	}
 
-	return transactions, nil
+	offset := (int(dto.Page) - 1) * int(dto.PageSize)
+
+	// Execute query with join to get category names
+	err := db.Table("transactions").
+		Select("transactions.*, categories.category_name").
+		Joins("LEFT JOIN categories ON transactions.category_id = categories.category_id").
+		Where("transactions.wallet_id = ?", dto.WalletId).
+		Order("transactions.created_at desc").
+		Limit(int(dto.PageSize)).
+		Offset(offset).
+		Scan(&transactions).Error
+
+	if err != nil {
+		return util.PaginationResult[TransactionWithCategoryDTO]{}, err
+	}
+
+	// Create pagination result
+	result := util.PaginationResult[TransactionWithCategoryDTO]{
+		Page:         int(dto.Page),
+		PageSize:     int(dto.PageSize),
+		TotalPages:   int((total + int64(dto.PageSize) - 1) / int64(dto.PageSize)),
+		TotalRecords: total,
+		Data:         transactions,
+	}
+
+	return result, nil
 }
 
 func DeleteTransaction(db *gorm.DB, transactionId string) error {
