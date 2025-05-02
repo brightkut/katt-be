@@ -5,11 +5,8 @@ import (
 	"fmt"
 	"github.com/aws/aws-lambda-go/events"
 	"github.com/aws/aws-lambda-go/lambda"
-	"katt-be/category"
 	"katt-be/handler"
 	"katt-be/middleware"
-	"katt-be/transaction"
-	"katt-be/wallet"
 	"log"
 	"os"
 	"time"
@@ -62,7 +59,7 @@ func init() {
 	}
 
 	// auto create and update table but not for delete case
-	db.AutoMigrate(&wallet.Wallet{}, &category.Category{}, &transaction.Transaction{})
+	//db.AutoMigrate(&wallet.Wallet{}, &category.Category{}, &transaction.Transaction{})
 
 	fmt.Printf("Connect DB successfully")
 
