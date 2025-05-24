@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"fmt"
 	"log"
 	"net/url"
 	"os"
@@ -13,7 +12,7 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
-func LoginMiddleware(c *fiber.Ctx) error {
+func JwtMiddleware(c *fiber.Ctx) error {
 	issuerURL, err := url.Parse("https://" + os.Getenv("AUTH0_DOMAIN") + "/")
 	if err != nil {
 		log.Fatalf("Failed to parse the issuer url: %v", err)
@@ -27,6 +26,7 @@ func LoginMiddleware(c *fiber.Ctx) error {
 		issuerURL.String(),
 		[]string{os.Getenv("AUTH0_AUDIENCE")},
 	)
+
 	if err != nil {
 		log.Fatalf("Failed to set up the jwt validator")
 	}
@@ -34,6 +34,7 @@ func LoginMiddleware(c *fiber.Ctx) error {
 	// get the token from the request header
 	authHeader := c.Get("Authorization")
 	authHeaderParts := strings.Split(authHeader, " ")
+
 	if len(authHeaderParts) != 2 {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"message": "Invalid authorization header",
@@ -42,8 +43,8 @@ func LoginMiddleware(c *fiber.Ctx) error {
 
 	// Validate the token
 	_, err = jwtValidator.ValidateToken(c.Context(), authHeaderParts[1])
+
 	if err != nil {
-		fmt.Println(err)
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{
 			"message": "Invalid token",
 		})

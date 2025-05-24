@@ -3,12 +3,14 @@ POST http://localhost:8080/wallets
 Content-Type: application/json
 
 {
-  "email": "test2@email.com",
+  "email": "dsorn@email.com",
   "totalMoney": 1000
 }
 ###01968490-5dc2-77b0-9011-52cc58714dcf
 ### Get Wallet By Email
+
 POST http://localhost:8080/wallets-by-email
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjB5cGJhdFh0dWpFSlNlNWo3TDcwNCJ9.eyJpc3MiOiJodHRwczovL2Rldi01b2todzdlcmZtdXczdTZrLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDExNDkzMTg5MzkwOTA2OTg4MTA1NCIsImF1ZCI6WyJ1bmlxdWUiLCJodHRwczovL2Rldi01b2todzdlcmZtdXczdTZrLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE3NDYxMTcwNDcsImV4cCI6MTc0NjIwMzQ0Nywic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImF6cCI6InNtaG5ueDE1TWRPU2NxZ1EweEswbTRyTEh4NEdkUG1wIn0.Lv5JkXz6EdsNiG308JCp5gViEv8FvQVkqVtyzUOhcHzlcv-aU3-MLn7eIezPnNXBOECTp5AUJyFhdbY-jsw0ti_QGO4UG3-zEH3iRfNib0vOs1BXRQ5FVYdNNd3Ah_jZvnpLu1qSOM_aq6ZYP88fzIEUwX2xFodUIhSahuV3oN3GAsYP-iEr3hKYreHKMg-qEY9xN2dt2gm4tAzOCSUDOTblhrIXHeSV17yAOZ2wC6Z0mIEQOGn0Ji6PydLCjTlm47fMmltcS4atM3W9KNYXMGbgwYfn5fEkH9WGFow2r3W0MUIJB17o6RIsOLwplj5kw1vEM3WHRZGIPRbo-OfYqA
 Content-Type: application/json
 
 {
@@ -17,47 +19,49 @@ Content-Type: application/json
 
 ### Create Category
 POST http://localhost:8080/categories
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjB5cGJhdFh0dWpFSlNlNWo3TDcwNCJ9.eyJpc3MiOiJodHRwczovL2Rldi01b2todzdlcmZtdXczdTZrLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDExNDkzMTg5MzkwOTA2OTg4MTA1NCIsImF1ZCI6WyJ1bmlxdWUiLCJodHRwczovL2Rldi01b2todzdlcmZtdXczdTZrLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE3NDYxMTcwNDcsImV4cCI6MTc0NjIwMzQ0Nywic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImF6cCI6InNtaG5ueDE1TWRPU2NxZ1EweEswbTRyTEh4NEdkUG1wIn0.Lv5JkXz6EdsNiG308JCp5gViEv8FvQVkqVtyzUOhcHzlcv-aU3-MLn7eIezPnNXBOECTp5AUJyFhdbY-jsw0ti_QGO4UG3-zEH3iRfNib0vOs1BXRQ5FVYdNNd3Ah_jZvnpLu1qSOM_aq6ZYP88fzIEUwX2xFodUIhSahuV3oN3GAsYP-iEr3hKYreHKMg-qEY9xN2dt2gm4tAzOCSUDOTblhrIXHeSV17yAOZ2wC6Z0mIEQOGn0Ji6PydLCjTlm47fMmltcS4atM3W9KNYXMGbgwYfn5fEkH9WGFow2r3W0MUIJB17o6RIsOLwplj5kw1vEM3WHRZGIPRbo-OfYqA
 Content-Type: application/json
 
 {
-  "walletId": "01968490-5dc2-77b0-9011-52cc58714dcf",
-  "categoryName": "Food"
+  "walletId": "019689ab-310b-7858-ae75-f8ec02458175",
+  "categoryName": "test"
 }
 
 ### Create Category
-POST http://localhost:8080/categories
-Content-Type: application/json
-
-{
-  "walletId": "01968157-97cb-722e-8000-2e19dfa5cd74",
-  "categoryName": "Fixed"
-}
+#POST http://localhost:8080/categories
+#Content-Type: application/json
+#
+#{
+#  "walletId": "01968157-97cb-722e-8000-2e19dfa5cd74",
+#  "categoryName": "Fixed"
+#}
 
 ### Get All Category By walletId
-POST http://localhost:8080/categories-by-wallet-id
+POST https://pyyvg1267e.execute-api.ap-southeast-1.amazonaws.com/categories-by-wallet-id
+Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6IjB5cGJhdFh0dWpFSlNlNWo3TDcwNCJ9.eyJpc3MiOiJodHRwczovL2Rldi01b2todzdlcmZtdXczdTZrLnVzLmF1dGgwLmNvbS8iLCJzdWIiOiJnb29nbGUtb2F1dGgyfDExNDkzMTg5MzkwOTA2OTg4MTA1NCIsImF1ZCI6WyJ1bmlxdWUiLCJodHRwczovL2Rldi01b2todzdlcmZtdXczdTZrLnVzLmF1dGgwLmNvbS91c2VyaW5mbyJdLCJpYXQiOjE3NDYxMTcwNDcsImV4cCI6MTc0NjIwMzQ0Nywic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCIsImF6cCI6InNtaG5ueDE1TWRPU2NxZ1EweEswbTRyTEh4NEdkUG1wIn0.Lv5JkXz6EdsNiG308JCp5gViEv8FvQVkqVtyzUOhcHzlcv-aU3-MLn7eIezPnNXBOECTp5AUJyFhdbY-jsw0ti_QGO4UG3-zEH3iRfNib0vOs1BXRQ5FVYdNNd3Ah_jZvnpLu1qSOM_aq6ZYP88fzIEUwX2xFodUIhSahuV3oN3GAsYP-iEr3hKYreHKMg-qEY9xN2dt2gm4tAzOCSUDOTblhrIXHeSV17yAOZ2wC6Z0mIEQOGn0Ji6PydLCjTlm47fMmltcS4atM3W9KNYXMGbgwYfn5fEkH9WGFow2r3W0MUIJB17o6RIsOLwplj5kw1vEM3WHRZGIPRbo-OfYqA
 Content-Type: application/json
 
 {
-  "walletId": "01968157-97cb-722e-8000-2e19dfa5cd74"
+  "walletId": "019689ab-310b-7858-ae75-f8ec02458175"
 }
 
 
 ### Delete Category
-DELETE http://localhost:8080/categories/01968157-97cb-722e-8000-2e19dfa5cd74
+DELETE http://localhost:8080/categories/019704a1-49fd-7318-9deb-c8c6265c5d53
 
 ### Create Transaction
 POST http://localhost:8080/transactions
 Content-Type: application/json
 
 {
-  "walletId": "01968157-97cb-722e-8000-2e19dfa5cd74",
+  "walletId": "019689ab-310b-7858-ae75-f8ec02458175",
   "categoryId": "01968198-5d1f-7b33-8c05-35d24415a02a",
   "transactionType": "ADD",
   "transactionName": "Chester"
 }
 
 ### Get All Transaction By Wallet Id
-GET http://localhost:8080/transactions?walletId=01968157-97cb-722e-8000-2e19dfa5cd74&page=0&pageSize=2
+GET http://localhost:8080/transactions?walletId=01968be6-3892-7683-9fad-f1923147d6bd&page=0&pageSize=2
 
 ### Delete Transaction
 DELETE http://localhost:8080/transactions/01968157-97cb-722e-8000-2e19dfa5cd74
