@@ -25,7 +25,6 @@ func (t *transactionHandler) Create(c *fiber.Ctx) error {
 	}
 
 	err := t.transactionService.Create(dto)
-
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).SendString(err.Error())
 	}
@@ -38,7 +37,6 @@ func (t *transactionHandler) Create(c *fiber.Ctx) error {
 func (t *transactionHandler) FindAllByWalletId(c *fiber.Ctx) error {
 	walletId := c.Query("walletId")
 	pageNumber, err := strconv.Atoi(c.Query("page"))
-
 	if err != nil {
 		return c.Status(fiber.StatusBadRequest).SendString(err.Error())
 	}

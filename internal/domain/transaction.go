@@ -12,6 +12,7 @@ type CreateTransactionDto struct {
 	TransactionType string
 	TransactionName string
 	Amount          float64
+	TransactionDate time.Time `json:"TransactionDate"`
 }
 
 type GetAllTransactionByWalletIdDto struct {
@@ -28,6 +29,7 @@ type TransactionWithCategoryDTO struct {
 	TransactionType string    `json:"transactionType"`
 	TransactionName string    `json:"transactionName"`
 	Amount          float64   `json:"amount"`
+	TransactionDate time.Time `json:"transactionDate"`
 	CreatedAt       time.Time `json:"createdAt"`
 	UpdatedAt       time.Time `json:"updatedAt"`
 }
@@ -39,6 +41,7 @@ type Transaction struct {
 	TransactionType string
 	TransactionName string
 	Amount          float64
+	TransactionDate time.Time `json:"transactionDate"`
 	CreatedAt       time.Time // Manually define timestamp fields
 	UpdatedAt       time.Time
 	DeletedAt       gorm.DeletedAt // Enables soft delete

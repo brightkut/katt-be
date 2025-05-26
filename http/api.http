@@ -57,7 +57,8 @@ Content-Type: application/json
   "walletId": "019689ab-310b-7858-ae75-f8ec02458175",
   "categoryId": "01968198-5d1f-7b33-8c05-35d24415a02a",
   "transactionType": "ADD",
-  "transactionName": "Chester"
+  "transactionName": "Chester",
+  "transaction_date": "2025-05-26T15:04:05Z"
 }
 
 ### Get All Transaction By Wallet Id

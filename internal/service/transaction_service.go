@@ -28,6 +28,10 @@ func NewTransactionService(walletRepo repository.WalletRepository, transactionRe
 func (t *transactionService) Create(dto *domain.CreateTransactionDto) error {
 	transactionId, error := uuid.NewV7()
 
+	if error != nil {
+		return error
+	}
+
 	wallet, error := t.walletRepository.FindById(dto.WalletId)
 
 	if error != nil {
@@ -44,6 +48,7 @@ func (t *transactionService) Create(dto *domain.CreateTransactionDto) error {
 		TransactionType: dto.TransactionType,
 		TransactionName: dto.TransactionName,
 		Amount:          dto.Amount,
+		TransactionDate: dto.TransactionDate,
 	}
 
 	error = t.transactionRepository.Save(transaction)
@@ -79,7 +84,6 @@ func (t *transactionService) FindAllByWalletId(dto *domain.GetAllTransactionByWa
 }
 
 func (t *transactionService) Delete(transactionId string) error {
-
 	transaction, error := t.transactionRepository.FindById(transactionId)
 
 	if error != nil {

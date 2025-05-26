@@ -4,12 +4,16 @@ import (
 	"context"
 	"katt-be/internal/config"
 	"katt-be/internal/handler"
+	"katt-be/internal/middleware"
+
 	// "katt-be/internal/middleware"
 	"katt-be/internal/repository"
 	"katt-be/internal/service"
 	"log"
 
 	"github.com/aws/aws-lambda-go/events"
+	"github.com/aws/aws-lambda-go/lambda"
+
 	// "github.com/aws/aws-lambda-go/lambda"
 
 	fiberadapter "github.com/awslabs/aws-lambda-go-api-proxy/fiber"
@@ -18,22 +22,20 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/cors"
 )
 
-var (
-	fiberLambda *fiberadapter.FiberLambda
-)
+var fiberLambda *fiberadapter.FiberLambda
 
 // init the Fiber Server
-func Init() {
+func init() {
 	log.Printf("Fiber cold start")
 
 	// TODO: update this when run on lambda
-	config.LoadEnv("dev")
+	// config.LoadEnv("dev")
 
 	// TODO: update this when run on lambda
 	db := config.NewPostgres("prod")
 
 	// auto create and update table but not for delete case
-	//db.AutoMigrate(&wallet.Wallet{}, &category.Category{}, &transaction.Transaction{})
+	// db.AutoMigrate(&wallet.Wallet{}, &category.Category{}, &transaction.Transaction{})
 
 	var app *fiber.App
 	app = fiber.New()
@@ -56,10 +58,10 @@ func Init() {
 
 	app.Get("/hello", handler.Hello)
 
-	// app.Use(middleware.JwtMiddleware)
+	app.Use(middleware.JwtMiddleware)
 
 	// TODO: for lambda
-	// fiberLambda = fiberadapter.New(app)
+	fiberLambda = fiberadapter.New(app)
 
 	app.Post("/wallets", walletHandler.Create)
 	app.Post("/wallets-by-email", walletHandler.GetByEmail)
@@ -70,8 +72,8 @@ func Init() {
 	app.Get("/transactions", transactionHandler.FindAllByWalletId)
 	app.Delete("/transactions/:id", transactionHandler.Delete)
 
-	//TODO: Running local
-	app.Listen(":8080")
+	// TODO: Running local
+	// app.Listen(":8080")
 }
 
 // // Handler will deal with Fiber working with Lambda
@@ -81,9 +83,9 @@ func Handler(ctx context.Context, req events.APIGatewayProxyRequest) (events.API
 }
 
 func main() {
-	//NOTE: Running local
-	Init()
+	// NOTE: Running local
+	// Init()
 
 	// TODO: uncomment for running on lambda
-	// lambda.Start(Handler)
+	lambda.Start(Handler)
 }
